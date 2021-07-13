@@ -1,5 +1,7 @@
 // rijndael.h
 
+#pragma once
+
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
@@ -7,6 +9,7 @@
 using namespace std;
 
 struct bitField{
+
 	unsigned char b0 : 1;
 	unsigned char b1 : 1;
 	unsigned char b2 : 1;
@@ -15,6 +18,7 @@ struct bitField{
     unsigned char b5 : 1;
     unsigned char b6 : 1;
     unsigned char b7 : 1;
+
 };
 
 union poly{
