@@ -112,7 +112,7 @@ Rijndael& Rijndael::operator^=(const unsigned char rhs){
 
 }
 
-unsigned char *Rijndael::remDiv(const Rijndael& divisor){
+unsigned char* Rijndael::remDiv(const Rijndael& divisor){
 	
 	static unsigned char out[2];
 	unsigned char temp = divisor.coefs.ch;
@@ -190,8 +190,22 @@ Rijndael Rijndael::operator*(const Rijndael& rhs){
 
 }
 
+Rijndael& Rijndael::operator*=(const Rijndael& rhs) {
+
+	*this = *this * rhs;
+	return *this;
+
+}
+
 Rijndael Rijndael::operator/(const Rijndael& rhs){
 
 	return *this * *(rhs.inv());
+
+}
+
+Rijndael& Rijndael::operator/=(const Rijndael& rhs) {
+
+	*this = *this / rhs;
+	return *this;
 
 }

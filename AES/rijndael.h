@@ -41,7 +41,6 @@ public:
 
 
 	Rijndael(char);
-//	~Rijndael(void);
 	
 	// Operator overloading
 	Rijndael& operator+=(const Rijndael&);
@@ -56,7 +55,6 @@ public:
 	Rijndael operator<<(const unsigned char);
 	Rijndael operator>>(const unsigned char);
 	void operator=(const Rijndael&);
-	void set_coefs(const unsigned char);
 	bool operator==(const Rijndael&);
 	bool operator!=(const Rijndael&);
 	bool operator<(const Rijndael&);
@@ -65,5 +63,6 @@ public:
 	bool operator>=(const Rijndael&);
 
 	Rijndael* inv(void) const;
+	void set_coefs(const unsigned char);
 
 };
