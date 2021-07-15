@@ -76,21 +76,21 @@ Rijndael Rijndael::operator-(const Rijndael& rhs){
 
 }
 
-Rijndael Rijndael::operator<<(const unsigned char shift){
-
-	Rijndael total;
-	total.coefs.ch = this->coefs.ch << shift;
-	return total;
-
-}
-
-Rijndael Rijndael::operator>>(const unsigned char shift){
-
-	Rijndael total;
-	total.coefs.ch = this->coefs.ch >> shift;
-	return total;
-
-}
+//Rijndael Rijndael::operator<<(const unsigned char shift){
+//
+//	Rijndael total;
+//	total.coefs.ch = this->coefs.ch << shift;
+//	return total;
+//
+//}
+//
+//Rijndael Rijndael::operator>>(const unsigned char shift){
+//
+//	Rijndael total;
+//	total.coefs.ch = this->coefs.ch >> shift;
+//	return total;
+//
+//}
 
 Rijndael& Rijndael::operator+=(const Rijndael& rhs){
 	
