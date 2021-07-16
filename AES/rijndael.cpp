@@ -16,13 +16,13 @@ Rijndael::Rijndael(){
 
 void Rijndael::set_coefs(const unsigned char ch){
 
-	this->coefs.ch = ch;
+	coefs.ch = ch;
 
 }
 
 bool Rijndael::operator==(const Rijndael& rhs){
 
-	return this->coefs.ch == rhs.coefs.ch;
+	return coefs.ch == rhs.coefs.ch;
 
 }
 
@@ -34,38 +34,38 @@ bool Rijndael::operator!=(const Rijndael& rhs){
 
 bool Rijndael::operator<(const Rijndael& rhs){
 
-	return this->coefs.ch < rhs.coefs.ch;
+	return coefs.ch < rhs.coefs.ch;
 
 }
 
 bool Rijndael::operator<=(const Rijndael& rhs){
 
-	return !(this->coefs.ch > rhs.coefs.ch);
+	return !(coefs.ch > rhs.coefs.ch);
 
 }
 
 bool Rijndael::operator>(const Rijndael& rhs){
 
-	return this->coefs.ch > rhs.coefs.ch;
+	return coefs.ch > rhs.coefs.ch;
 
 }
 
 bool Rijndael::operator>=(const Rijndael& rhs){
 
-	return !(this->coefs.ch < rhs.coefs.ch);
+	return !(coefs.ch < rhs.coefs.ch);
 
 }
 
 void Rijndael::operator=(const Rijndael& rhs){
 
-	this->coefs = rhs.coefs;
+	coefs = rhs.coefs;
 
 }
 
 Rijndael Rijndael::operator+(const Rijndael& rhs){
 
 	Rijndael total;
-	total.coefs.ch = this->coefs.ch ^ rhs.coefs.ch;
+	total.coefs.ch = coefs.ch ^ rhs.coefs.ch;
 	return total;
 
 }
@@ -76,25 +76,9 @@ Rijndael Rijndael::operator-(const Rijndael& rhs){
 
 }
 
-//Rijndael Rijndael::operator<<(const unsigned char shift){
-//
-//	Rijndael total;
-//	total.coefs.ch = this->coefs.ch << shift;
-//	return total;
-//
-//}
-//
-//Rijndael Rijndael::operator>>(const unsigned char shift){
-//
-//	Rijndael total;
-//	total.coefs.ch = this->coefs.ch >> shift;
-//	return total;
-//
-//}
-
 Rijndael& Rijndael::operator+=(const Rijndael& rhs){
 	
-	this->coefs.ch ^= rhs.coefs.ch;
+	coefs.ch ^= rhs.coefs.ch;
 	return *this;
 
 }
@@ -107,7 +91,7 @@ Rijndael& Rijndael::operator-=(const Rijndael& rhs){
 
 Rijndael& Rijndael::operator^=(const unsigned char rhs){
 
-	this->coefs.ch ^= rhs;
+	coefs.ch ^= rhs;
 	return *this;
 
 }
@@ -119,9 +103,9 @@ unsigned char* Rijndael::remDiv(const Rijndael& divisor){
 	unsigned char q = 0;
 	int i, j; 
 
-	if(0 != this->coefs.ch && *this < divisor){
+	if(0 != coefs.ch && *this < divisor){
 		out[0] = 0;
-		out[1] = this->coefs.ch;
+		out[1] = coefs.ch;
 		return out;
 	}
 
@@ -130,7 +114,7 @@ unsigned char* Rijndael::remDiv(const Rijndael& divisor){
 	else
 		for(i = 0; temp>>i != 0; i++);
 
-	temp = this->coefs.ch;
+	temp = coefs.ch;
 	for(j = 0; temp>>j != 0; j++);
 
 	while(j - i >= 0){
@@ -156,7 +140,7 @@ Rijndael* Rijndael::inv() const{
 	Rijndael* inverse = new Rijndael();
 	Rijndael q;
 	Rijndael r_2;
-	Rijndael r_1(this->coefs.ch);
+	Rijndael r_1(coefs.ch);
 	Rijndael t_2;
 	Rijndael t_1(1);
 	unsigned char temp;
@@ -179,15 +163,41 @@ Rijndael* Rijndael::inv() const{
 	return inverse;
 }
 
-Rijndael Rijndael::operator*(const Rijndael& rhs){
+Rijndael Rijndael::operator<<(const unsigned char shift){
 
 	Rijndael total;
-	
+	int deg;
+	for (deg = 0; coefs.ch >> deg != 0; deg++);
 
+	if (deg + shift < 9)
+		total.set_coefs(coefs.ch << shift);
 
+	else {
+		total.set_coefs(coefs.ch);
+
+		unsigned char i = shift;
+		while (i > 0) {
+			total.set_coefs(total.coefs.ch << (9 - deg));
+			total ^= 27;
+			i -= 9 - deg;
+			for (deg = 0; total.coefs.ch >> deg != 0; deg++);
+		}
+
+	}
 
 	return total;
 
+}
+
+Rijndael Rijndael::operator*(const Rijndael& rhs){
+
+	Rijndael total;
+	for (int i = 0; i < 8; i++) {
+		if ((rhs.coefs.ch >> i) % 2)
+			total += *this << i;
+	}
+
+	return total;
 }
 
 Rijndael& Rijndael::operator*=(const Rijndael& rhs) {

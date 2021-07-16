@@ -35,6 +35,7 @@ private:
 	Rijndael(void);
 	unsigned char *remDiv(const Rijndael&);
 	static unsigned char *remDiv(unsigned char, unsigned char);
+	Rijndael operator<<(const unsigned char);
 
 public:
 	poly coefs;
@@ -52,8 +53,6 @@ public:
     Rijndael operator-(const Rijndael&);
 	Rijndael operator*(const Rijndael&);
 	Rijndael operator/(const Rijndael&);
-	/*Rijndael operator<<(const unsigned char);
-	Rijndael operator>>(const unsigned char);*/
 	void operator=(const Rijndael&);
 	bool operator==(const Rijndael&);
 	bool operator!=(const Rijndael&);
