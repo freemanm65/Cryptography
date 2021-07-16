@@ -169,7 +169,7 @@ Rijndael Rijndael::operator<<(const unsigned char shift){
 	int deg;
 	for (deg = 0; coefs.ch >> deg != 0; deg++);
 
-	if (deg + shift < 8)
+	if (deg + shift < 9)
 		total.set_coefs(coefs.ch << shift);
 
 	else {
@@ -192,9 +192,8 @@ Rijndael Rijndael::operator<<(const unsigned char shift){
 Rijndael Rijndael::operator*(const Rijndael& rhs){
 
 	Rijndael total;
-	
 	for (int i = 0; i < 8; i++) {
-		if (rhs.coefs.ch >> i)
+		if ((rhs.coefs.ch >> i) % 2)
 			total += *this << i;
 	}
 
