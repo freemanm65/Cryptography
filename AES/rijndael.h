@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <stdlib.h>
-#include <math.h>
 #include <iostream>
 
 using namespace std;
@@ -39,7 +37,6 @@ private:
 
 public:
 	poly coefs;
-
 
 	Rijndael(char);
 	
