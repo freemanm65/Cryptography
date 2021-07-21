@@ -1,6 +1,5 @@
 #include "rijndael.h"
 
-
 int main() {
 	Rijndael a(30);
 	cout << +(a.coefs.ch) << endl;

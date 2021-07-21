@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <typeinfo>
+#include "NT.h"
 
 using namespace std;
 
@@ -22,14 +23,15 @@ public:
 	// Operator overloading
 	bool operator==(const EllCurve&);
 	void operator=(const EllCurve&);
+
+	unsigned int order(void);
 };
 
 class Point {
-
 	int x, y;
 	EllCurve curve;
 	bool onCurve();
-	
+
 protected:
 	Point(bool, EllCurve);
 	bool isNeutral;
@@ -41,22 +43,21 @@ public:
 	int get_y(void) const;
 	EllCurve get_curve(void) const;
 
-
 	// Operator overloading
 	bool operator==(const Point&);
 	void operator=(const Point&);
 	Point operator+(const Point&);
 	Point operator-(const Point&);
+	Point operator*(int);
 	Point& operator+=(const Point&);
 	Point& operator-=(const Point&);
+	Point& operator*=(int);
 
 	Point inv() const;
+	Point dbl() const;
 };
 
-class NeutralPoint : Point {
-
-
+class NeutralPoint : public Point {
 public:
 	NeutralPoint(EllCurve);
-
 };
