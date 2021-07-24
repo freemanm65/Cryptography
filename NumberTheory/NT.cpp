@@ -6,7 +6,7 @@ int* eea(int x, int y) {
 	int t_1 = 0;
 	int q, temp;
 
-	while (!(x % ret[0])) {
+	while (x % ret[0]) {
 		q = (int)(x / ret[0]);
 		temp = ret[0];
 		ret[0] = x % ret[0];

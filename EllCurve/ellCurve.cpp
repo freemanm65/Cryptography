@@ -8,7 +8,7 @@ bool EllCurve::validCurve(void)
 EllCurve::EllCurve(int a, int b, int p) : A(a), B(b), P(p)
 {
 	if (!(validCurve()))
-		cout << "Invalid elliptic curve" << endl;
+		std::cout << "Invalid elliptic curve" << std::endl;
 }
 
 int EllCurve::get_a() const
@@ -33,7 +33,9 @@ int EllCurve::f(int x)
 
 bool EllCurve::operator==(const EllCurve& rhs)
 {
-	return (A == rhs.get_a()) && (B == rhs.get_b()) && (P == rhs.get_p());
+	if(P==rhs.get_p())
+		return (A%P == rhs.get_a()%P) && (B%P == rhs.get_b()%P);
+	return false;
 }
 
 void EllCurve::operator=(const EllCurve& rhs)
@@ -54,7 +56,7 @@ unsigned int EllCurve::order(void)
 Point::Point(int X, int Y, EllCurve Curve) :x(X), y(Y), curve(Curve), isNeutral(false)
 {
 	if (!onCurve())
-		cout << "This point is not on the curve" << endl;
+		std::cout << "This point is not on the curve" << std::endl;
 }
 
 int Point::get_x(void) const
@@ -72,6 +74,11 @@ EllCurve Point::get_curve(void) const
 	return curve;
 }
 
+bool Point::get_isNeutral(void) const
+{
+	return isNeutral;
+}
+
 bool Point::onCurve()
 {
 	return curve.f(x) == ((y * y) % curve.get_p());
@@ -83,7 +90,11 @@ Point::Point(bool IsNeutral, EllCurve Curve) : curve(Curve), isNeutral(IsNeutral
 
 bool Point::operator==(const Point& rhs)
 {
-	return (x == rhs.get_x()) && (y == rhs.get_y()) && (curve == rhs.get_curve());
+	if (curve == rhs.get_curve()) {
+		int p = curve.get_p();
+		return (x%p == rhs.get_x()%p) && (y%p == rhs.get_y()%p);
+	}
+	return false;
 }
 
 void Point::operator=(const Point& rhs)
@@ -91,6 +102,7 @@ void Point::operator=(const Point& rhs)
 	x = rhs.get_x();
 	y = rhs.get_y();
 	curve = rhs.get_curve();
+	isNeutral = rhs.get_isNeutral();
 }
 
 Point Point::operator+(const Point& rhs)
@@ -100,7 +112,7 @@ Point Point::operator+(const Point& rhs)
 	if (rhs.isNeutral)
 		return *this;
 
-	if (get_x() == rhs.get_x() && !((get_y() + rhs.get_y()) % curve.get_p()))
+	if (get_x() == rhs.get_x() && (get_y() + rhs.get_y()) % curve.get_p() == 0)
 		return NeutralPoint(curve);
 
 	int m;
@@ -127,6 +139,11 @@ Point Point::operator+(const Point& rhs)
 Point Point::operator-(const Point& rhs)
 {
 	return *this + rhs.inv();
+}
+
+Point Point::operator-() const
+{
+	return Point(x, -y, curve);
 }
 
 Point Point::operator*(int n)
@@ -189,6 +206,40 @@ Point Point::dbl() const
 	return Point(x3, y3, curve);
 }
 
+void Point::Print()
+{
+	if (isNeutral)
+		std::cout << "Neutral Point" << std::endl;
+	else
+		std::cout << "(" << x << ", " << y << ")" << std::endl;
+}
+
 NeutralPoint::NeutralPoint(EllCurve Curve) : Point(true, Curve)
 {
 }
+
+bool NeutralPoint::operator==(const Point& rhs)
+{
+	return rhs.get_isNeutral();
+}
+
+Point NeutralPoint::operator+(const Point& rhs)
+{
+	return rhs;
+}
+
+Point NeutralPoint::operator-(const Point& rhs)
+{
+	return -rhs;
+}
+
+Point NeutralPoint::operator-() const
+{
+	return *this;
+}
+
+void NeutralPoint::Print()
+{
+	std::cout << "Neutral Point" << std::endl;
+}
+

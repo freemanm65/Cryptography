@@ -4,8 +4,6 @@
 #include <typeinfo>
 #include "NT.h"
 
-using namespace std;
-
 class EllCurve {
 	int A, B, P;
 
@@ -42,22 +40,33 @@ public:
 	int get_x(void) const;
 	int get_y(void) const;
 	EllCurve get_curve(void) const;
+	bool get_isNeutral(void) const;
 
 	// Operator overloading
-	bool operator==(const Point&);
+	virtual bool operator==(const Point&);
 	void operator=(const Point&);
-	Point operator+(const Point&);
-	Point operator-(const Point&);
+	virtual Point operator+(const Point&);
+	virtual Point operator-(const Point&);
+	virtual Point operator-(void) const;
 	Point operator*(int);
 	Point& operator+=(const Point&);
 	Point& operator-=(const Point&);
 	Point& operator*=(int);
 
-	Point inv() const;
-	Point dbl() const;
+	Point inv(void) const;
+	Point dbl(void) const;
+
+	virtual void Print(void);
 };
 
 class NeutralPoint : public Point {
 public:
 	NeutralPoint(EllCurve);
+
+	bool operator==(const Point&) override;
+	Point operator+(const Point&) override;
+	Point operator-(const Point&) override;
+	Point operator-(void) const override;
+
+	void Print(void) override;
 };
