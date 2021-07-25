@@ -22,6 +22,25 @@ int* eea(int x, int y) {
 	return ret;
 }
 
+int gcd(int x, int y)
+{
+	int temp;
+
+	if (x < y) {
+		temp = x;
+		x = y;
+		y = temp;
+	}
+
+	while (!(x % y)) {
+		temp = y;
+		y = x % y;
+		x = temp;
+	}
+
+	return y;
+}
+
 char jacobi(int a, int n)
 {
 	if (!(a % n))
