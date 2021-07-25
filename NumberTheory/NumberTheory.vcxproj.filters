@@ -18,9 +18,15 @@
     <ClInclude Include="NT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rational.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rational.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
