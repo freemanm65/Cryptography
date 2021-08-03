@@ -33,8 +33,8 @@ int EllCurve::f(int x)
 
 bool EllCurve::operator==(const EllCurve& rhs)
 {
-	if(P==rhs.get_p())
-		return (A%P == rhs.get_a()%P) && (B%P == rhs.get_b()%P);
+	if (P == rhs.get_p())
+		return !((A - rhs.get_a()) % P || (B - rhs.get_b()) % P);
 	return false;
 }
 
@@ -53,7 +53,7 @@ unsigned int EllCurve::order(void)
 	return total;
 }
 
-Point::Point(int X, int Y, EllCurve Curve) :x(X), y(Y), curve(Curve), isNeutral(false)
+Point::Point(int X, int Y, EllCurve Curve) :x(X % Curve.get_p()), y(Y % Curve.get_p()), curve(Curve), isNeutral(false)
 {
 	if (!onCurve())
 		std::cout << "This point is not on the curve" << std::endl;
@@ -81,7 +81,7 @@ bool Point::get_isNeutral(void) const
 
 bool Point::onCurve()
 {
-	return curve.f(x) == ((y * y) % curve.get_p());
+	return ((y * y) - curve.f(x)) % curve.get_p() == 0;
 }
 
 Point::Point(bool IsNeutral, EllCurve Curve) : curve(Curve), isNeutral(IsNeutral)
@@ -92,7 +92,7 @@ bool Point::operator==(const Point& rhs)
 {
 	if (curve == rhs.get_curve()) {
 		int p = curve.get_p();
-		return (x%p == rhs.get_x()%p) && (y%p == rhs.get_y()%p);
+		return !((x - rhs.get_x()) % p || (y - rhs.get_y()) % p);
 	}
 	return false;
 }
@@ -112,20 +112,20 @@ Point Point::operator+(const Point& rhs)
 	if (rhs.isNeutral)
 		return *this;
 
-	if (get_x() == rhs.get_x() && (get_y() + rhs.get_y()) % curve.get_p() == 0)
-		return NeutralPoint(curve);
-
 	int m;
 	int a = curve.get_a();
 	int p = curve.get_p();
 
-	if (get_x() == rhs.get_x()) {
+	if (!((x - rhs.get_x()) % p || (y + rhs.get_y()) % p))
+		return NeutralPoint(curve);
+
+	if (!((x - rhs.get_x()) % p)) {
 		m = (3 * x * x + a) % p;
-		m *= eea(p, 2 * get_y())[2];
+		m *= eea(p, (2 * y) % p)[2];
 	}
 	else {
 		m = y - rhs.get_y();
-		m *= eea(p, x - rhs.get_x())[2];
+		m *= eea(p, (x - rhs.get_x()) % p)[2];
 	}
 
 	m %= p;
@@ -197,7 +197,7 @@ Point Point::dbl() const
 	int p = curve.get_p();
 
 	m = (3 * x * x + a) % p;
-	m *= eea(p, 2 * y)[2];
+	m *= eea(p, (2 * y) % p)[2];
 	m %= p;
 
 	int x3 = (-x - x + m * m) % p;
@@ -238,8 +238,22 @@ Point NeutralPoint::operator-() const
 	return *this;
 }
 
+Point NeutralPoint::dbl(void) const
+{
+	return NeutralPoint(get_curve());
+}
+
 void NeutralPoint::Print()
 {
 	std::cout << "Neutral Point" << std::endl;
 }
 
+Point operator*(int lhs, Point& rhs)
+{
+	return rhs * lhs;
+}
+
+Point& operator*=(int lhs, Point& rhs)
+{
+	return rhs *= lhs;
+}

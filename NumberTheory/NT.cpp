@@ -1,7 +1,11 @@
 #include "NT.h"
 
 int* eea(int x, int y) {
-	int ret[3] = { y, 0, 1 };
+	int* ret = new int[3];
+	ret[0] = y < 0 ? x + y : y;
+	ret[1] = 0;
+	ret[2] = 1;
+
 	int s_1 = 1;
 	int t_1 = 0;
 	int q, temp;

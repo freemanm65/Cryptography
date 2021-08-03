@@ -54,10 +54,15 @@ public:
 	Point& operator*=(int);
 
 	Point inv(void) const;
-	Point dbl(void) const;
+	virtual Point dbl(void) const;
 
 	virtual void Print(void);
 };
+
+
+Point operator*(int, Point&);
+
+Point& operator*=(int, Point&);
 
 class NeutralPoint : public Point {
 public:
@@ -67,6 +72,8 @@ public:
 	Point operator+(const Point&) override;
 	Point operator-(const Point&) override;
 	Point operator-(void) const override;
+
+	Point dbl(void) const override;
 
 	void Print(void) override;
 };
