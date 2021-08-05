@@ -1,12 +1,16 @@
 #include "NT.h"
 
 int* eea(int x, int y) {
-	int ret[3] = { y, 0, 1 };
+	int* ret = new int[3];
+	ret[0] = y < 0 ? x + y : y;
+	ret[1] = 0;
+	ret[2] = 1;
+
 	int s_1 = 1;
 	int t_1 = 0;
 	int q, temp;
 
-	while (!(x % ret[0])) {
+	while (x % ret[0]) {
 		q = (int)(x / ret[0]);
 		temp = ret[0];
 		ret[0] = x % ret[0];
@@ -70,7 +74,7 @@ char jacobi(int a, int n)
 int sqrtmodp(int a, int p)
 {
 	a %= p;
-	if (p % 8 == 3 || p % 8 == 7) 
+	if (p % 8 == 3 || p % 8 == 7)
 		return expmod(a, (p + 1) >> 2, p);
 	if (p % 8 == 5) {
 		int x = expmod(a, (p + 3) >> 3, p);
@@ -84,7 +88,7 @@ int sqrtmodp(int a, int p)
 	while (jacobi(d, p) != 1)
 		d = rand() % (p - 2) + 2;
 	int k = 0;
-	int q = p-1;
+	int q = p - 1;
 	while (!(q % 2)) {
 		q >>= 1;
 		k++;
@@ -93,8 +97,8 @@ int sqrtmodp(int a, int p)
 	int D = expmod(d, q, p);
 	int m = 0;
 	for (int i = 0; i < k; i++) {
-		if (expmod(A * expmod(D, m, p), pow(2, k - 1 - i), p) == p - 1)
-			m += pow(2, i);
+		if (expmod(A * expmod(D, m, p), (int)pow(2, k - 1 - i), p) == p - 1)
+			m += (int)pow(2, i);
 	}
 	return expmod(a, (q + 1) >> 1, p) * expmod(D, m >> 1, p) % p;
 }
