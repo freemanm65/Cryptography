@@ -6,5 +6,4 @@ int main() {
 	Point P(244, 237, curve);
 	Point Q = 121*P;
 	Q.Print();
-
 }

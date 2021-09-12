@@ -1,6 +1,6 @@
 #include "rational.h"
 
-Rational::Rational(int x, int y): a(x)
+Rational::Rational(int x, int y): a(x), b(1)
 {
 	if (y) {
 		b = y;
@@ -93,7 +93,7 @@ Rational& Rational::operator/=(const Rational& rhs)
 
 	if (!x) {
 		std::cout << "Invalid division. Can't divide by 0" << std::endl;
-		return;
+		return *this;
 	}
 
 	a *= y;
@@ -191,7 +191,7 @@ Rational Rational::inv() const
 {
 	if (a == 0) {
 		std::cout << "0 has no inverse" << std::endl;
-		return;
+		return *this;
 	}
 	return Rational(b, a);
 }

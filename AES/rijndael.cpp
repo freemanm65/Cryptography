@@ -88,7 +88,7 @@ unsigned char* Rijndael::remDiv(const Rijndael& divisor) {
 
 	while (j - i >= 0) {
 		temp ^= divisor.coefs.ch << (j - i);
-		q ^= (unsigned char)pow(2, j - i);
+		q ^= (unsigned char)(1 << (j - i));
 
 		for (j = 0; temp >> j != 0; j++);
 	}

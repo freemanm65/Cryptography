@@ -19,14 +19,14 @@ struct bitField {
 
 union poly {
 	unsigned char ch;
-	struct bitField;
+	struct bitField bits;
 };
 
 class Rijndael {
 private:
 	Rijndael(void);
 	unsigned char* remDiv(const Rijndael&);
-	static unsigned char* remDiv(unsigned char, unsigned char);
+	//static unsigned char* remDiv(unsigned char, unsigned char);
 	Rijndael operator<<(const unsigned char);
 
 public:

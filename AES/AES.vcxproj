@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cipher.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="rijndael.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cipher.h" />
     <ClInclude Include="rijndael.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
